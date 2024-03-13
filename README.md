@@ -23,13 +23,22 @@ go to the xiangshan(https://github.com/OpenXiangShan/XiangShan) project repo, em
 ```
 cp -rf xiangshan/build/* chipyard/generators/xiangshan/src/main/resources/vsrc/baseConfig/.
 ```
-To avoid the naming issue(since some modules in xiangshan share the same name with the modules in chipyard-generated files), run renamer.py
+To avoid the naming issue(since some modules in xiangshan share the same name with the modules in chipyard-generated files) in XSTop.v, run renamer.py
 
 ```
 python chipyard/generators/xiangshan/renamer.py
 ```
 
 In the renamer, if further modules has naming conflicts, add those module names into the list within the renamer.
+
+go to chipyard/generate/src/main/resources, generate the xiangshanBaseConfig.prepossessed.v
+
+```
+make
+
+```
+You will see xiangshanBaseConfig.prepossessed.v
+
 
 ### Configurator
 
@@ -88,6 +97,12 @@ simv-chipyard-XiangshanConfig-debug is generated.
 This solution is tested on Nanhu xiangshan only. If you want to try the latest xiangshan integration, you will need to make some adjustment.
 
 This solution is for simulation only, since I haven't fully cleaned the warnings.
+
+## Common Problem & My Solutions
+
+1. Lint Error: More checking on the interface on XiangshanBaseBlackBox.scala and XiangshanTile.scala, sometimes width of ports in xiangshan and width of ports in chipyard(depends on which version you are using) are not the consistent.
+2. DPI-C in Difftest* Modules, including some import errors: This happens in the latest version of xiangshan. My solution is to generate a xiangshan verilog in nanhu version, and replace the Difftest related modules to the latest version.
+3. simv-chipyard-XiangshanConfig-debug cannot successfully simulate the riscv workload: Check on the waveforms.
 
 ## Maintenance
 
